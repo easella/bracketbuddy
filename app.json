@@ -2,10 +2,11 @@
   "name": "Node.js Sample",
   "description": "A barebones Node.js app using Express 4",
   "repository": "https://github.com/easella/bracketbuddy",
-  "logo": "https://rawgit.com/heroku/node-js-sample/master/public/node.svg"
-},
-"buildpacks": [
-    {
-      "url": "https://github.com/heroku/heroku-buildpack-python.git"
-    }
-  ]
+  "logo": "https://rawgit.com/heroku/node-js-sample/master/public/node.svg",
+   "keywords": [
+    "productivity",
+     "python",
+    "HTML5",
+    "scalpel"
+  ],
+}
