@@ -11,7 +11,7 @@ cycler==0.10.0
 dnspython==1.16.0
 Flask==1.0.2
 Flask-PyMongo==2.2.0
-gast==0.2.2
+gast
 grpcio==1.20.1
 gunicorn==19.9.0
 h5py==2.9.0
@@ -45,7 +45,7 @@ simplejson==3.16.0
 six==1.12.0
 sportsreference==0.4.1
 tensorboard==1.13.1
-tensorflow==2.6.3
+tensorflow==
 tensorflow-estimator==1.13.0
 termcolor==1.1.0
 urllib3==1.24.2
