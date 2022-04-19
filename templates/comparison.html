@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Graduate" rel="stylesheet">
+  <title>Bracket Buddy - Predict a Winner</title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand active flex-grow-1" href="/" style="font-family: 'Graduate';">
+      <img src="../static/images/basketball2.svg" width="30" height="30" class="d-inline-block align-top" alt="Designed by Freepik from www.flaticon.com">
+      Bracket Buddy
+    </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a id="compare-teams" class="nav-link" href="/comparison">Predict Winner</a>
+          </li>
+          <li class="nav-item">
+            <a id="team-page" class="nav-link" href="/team">Team Statistics</a>
+          </li>
+          <li class="nav-item">
+            <a id="compare-scatter" class="nav-link" href="/scatter">Deep Dive</a>
+          </li>
+        <li class="nav-item">
+          <a id="reference" class="nav-link" href="/reference">Reference</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <form class="d-flex w-100 justify-content-center pl-5 form-inline">
+        <div class="form-group row" id="change-team">
+              <label for="team-year-filter-1" class="my-1 mr-2"><strong>Home Year</strong></label>
+              <div>
+                <select id="home-year-dropdown" name="team-year-filter-1" class="custom-select my-1 mr-sm-2">
+                </select>
+              </div>
+              <label for="team-filter-1" class="my-1 mr-2"><strong>Home Team</strong></label>
+              <div>
+                <select id="home-team-dropdown" name="team-filter-1" class="custom-select my-1 mr-sm-2">
+                </select>
+              </div>
+              <label for="team-year-filter-2" class="my-1 mr-2"><strong>Away Year</strong></label>
+              <div>
+                <select id="away-year-dropdown" name="team-year-filter-2" class="custom-select my-1 mr-sm-2">
+                </select>
+              </div>
+              <label for="team-filter-2" class="my-1 mr-2"><strong>Away Team</strong></label>
+              <div>
+                <select id="away-team-dropdown" name="team-filter-2" class="custom-select my-1 mr-sm-2">
+                </select>
+              </div>
+            </div>
+    </form>
+  </nav>
+  <div class="container">
+    <div class="row mt-4 justify-content-center">
+      <h2>Predicted Scores</h2>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-sm-6 col-xs-6 home-team-name">
+        <span class="team-name" id="homeTeamName"></span>
+      </div>
+      <div class="col-md-6 col-sm-6 col-xs-6 away-team-name">
+        <span class="team-name" id="awayTeamName"></span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-sm-6 col-xs-6 home-team-score">
+        <span class="team-score" id="homeTeamScore" style="font-family: 'Graduate';"></span>
+      </div>
+      <div class="col-md-6 col-sm-6 col-xs-6 away-team-score">
+        <span class="team-score" id="awayTeamScore" style="font-family: 'Graduate';"></span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 offset-md-4">
+        <canvas id="winBar"> </canvas>
+      </div>
+    </div>
+    <div class="row" id="scatterContainer">
+      <div class="col-md-8 offset-md-2 mt-4">
+        <canvas id="mlScatter" aspectRatio="1"></canvas>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-md-6 col-sm-12 col-xs-12" id="over-under-pdf">
+        <canvas id="overUnderPDF" aspectRatio="1"></canvas>
+      </div>
+      <div class="col-md-6 col-sm-12 col-xs-12" id="spread-pdf">
+        <canvas id="spreadPDF" aspectRatio="1"></canvas>
+      </div>
+    </div>
+    <div class="container" id="barContainer" style="padding-top: 10px;">
+      <canvas id="doubleBar" height="110px"></canvas>
+    </div>
+    <div class="row mt-4">
+      <div class="col-md-6 col-sm-12 col-xs-12" id="home-radar-ff">
+          <h4 style="text-align: center">Four Factors</h4>
+        <canvas id="homeRadarFF" aspectRatio="1"></canvas>
+      </div>
+      <div class="col-md-6 col-sm-12 col-xs-12 mb-5" id="home-radar-rank">
+          <h4 style="text-align: center">National Rankings</h4>
+        <canvas id="homeRadarRank" aspectRatio="1"></canvas>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  <script src="{{ url_for('static', filename='js/dropdown.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/mlScatter.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/probability.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/radar.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/barChart.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/comparison.js') }}"></script>
+</body>
+
+</html>
